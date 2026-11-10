@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>videopipe - retorno do login</title>
+<style>
+body{margin:0;background:#0b1020;color:#e6eaf7;font:16px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh}
+main{max-width:640px;padding:24px}
+textarea{width:100%;height:120px;background:#121831;color:#e6eaf7;border:1px solid #2a3360;border-radius:10px;padding:10px;font:12px monospace}
+button{margin-top:12px;background:#4c8dff;color:#06101f;border:0;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer}
+.e{color:#ff8fab}
+</style>
+</head>
+<body>
+<main>
+<h2>videopipe</h2>
+<p id="m">Copie o endereço abaixo e cole no videopipe (Agenda → Colar URL de retorno), ou mande para o Claude.</p>
+<textarea id="u" readonly></textarea><br>
+<button id="b">Copiar</button>
+<p style="color:#8a94b8;font-size:13px">Esta página não envia nada para lugar nenhum: o código só aparece aqui para você copiar.</p>
+</main>
+<script>
+var u = document.getElementById('u'); u.value = location.href;
+var q = new URLSearchParams(location.search);
+if (q.get('error')) { document.getElementById('m').innerHTML = '<span class="e">A rede recusou: ' + (q.get('error_description') || q.get('error')).replace(/</g, '&lt;') + '</span>'; }
+else if (!q.get('code')) { document.getElementById('m').textContent = 'Nenhum código nesta página. Inicie o login pelo videopipe.'; }
+document.getElementById('b').onclick = function () { u.select(); navigator.clipboard.writeText(u.value).then(function () { document.getElementById('b').textContent = 'Copiado!'; }); };
+</script>
+</body>
+</html>
